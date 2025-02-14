@@ -40,6 +40,13 @@ private JCheckBox boxLogged;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         
+        try {
+            ImageIcon icon = new ImageIcon("mainIcon.png");
+            setIconImage(icon.getImage());
+        } catch (Exception e) {
+            System.err.println("Error loading icon: " + e.getMessage());
+        }
+        
         hdrLabel = new JLabel("Sign in");
         hdrLabel.setBounds(25, 20, 150, 35);
         hdrLabel.setFont(new Font("Arial", Font.PLAIN, 33));
