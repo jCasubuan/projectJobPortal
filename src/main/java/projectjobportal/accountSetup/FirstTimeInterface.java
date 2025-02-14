@@ -22,12 +22,19 @@ private JPanel hdrPanel, panelWelcome;
 private JButton btnJobSeeker, btnEmployer;
             
             
-    FirstTimeInterface() {
+    public FirstTimeInterface() {
         setSize(1500, 780);
         setLayout(null);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
+        
+        try {
+            ImageIcon icon = new ImageIcon("mainIcon.png");
+            setIconImage(icon.getImage());
+        } catch (Exception e) {
+            System.err.println("Error loading icon: " + e.getMessage());
+        }
                 
         hdrPanel = new JPanel();
         hdrPanel.setBorder(new LineBorder(Color.GRAY, 1));
