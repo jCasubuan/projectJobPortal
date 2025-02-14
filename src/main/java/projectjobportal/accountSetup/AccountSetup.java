@@ -45,6 +45,13 @@ public class AccountSetup extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
         setResizable(false);
         
+        try {
+            ImageIcon icon = new ImageIcon("mainIcon.png");
+            setIconImage(icon.getImage());
+        } catch (Exception e) {
+            System.err.println("Error loading icon: " + e.getMessage());
+        }
+        
         // Initialize CardLayout
         cardLayout = new CardLayout();
         cards = new JPanel(cardLayout);
@@ -410,13 +417,15 @@ public class AccountSetup extends JFrame implements ActionListener {
         lblPlaceHolderDesiredJobs = new JLabel("e.g. Cashier, Nurse, Driver");
         lblPlaceHolderDesiredJobs.setFont(new Font("Arial", Font.PLAIN, 18));
         lblPlaceHolderDesiredJobs.setForeground(Color.GRAY);
-        lblPlaceHolderDesiredJobs.setBounds(510, 235, 250, 33); // Adjusted Y position
+        lblPlaceHolderDesiredJobs.setBounds(520, 235, 250, 33); // Adjusted Y position
         panel.add(lblPlaceHolderDesiredJobs);
 
         txtDesiredJobs = new JTextField();
         txtDesiredJobs.setBounds(505, 225, 420, 55); // Move text field slightly lower
         txtDesiredJobs.setFont(new Font("Arial", Font.PLAIN, 16));
-        txtDesiredJobs.setBorder(BorderFactory.createCompoundBorder(txtDesiredJobs.getBorder(), new EmptyBorder(10, 5, 2, 5)));
+        txtDesiredJobs.setBorder(BorderFactory.createCompoundBorder(txtDesiredJobs.getBorder(), 
+                new EmptyBorder(10, 5, 2, 5)
+        ));
         panel.add(txtDesiredJobs);
                
         lblRequiredPage3 = new JLabel("Required*");
@@ -461,6 +470,33 @@ public class AccountSetup extends JFrame implements ActionListener {
         
     }
     
+    public static String formatPhoneNumber(String input) {
+        // Only remove spaces and non-digits
+        String cleaned = input.replaceAll("[^0-9]", "");
+        
+        // Don't format if less than 3 digits
+        if (cleaned.length() < 3) return cleaned;
+        
+        StringBuilder formatted = new StringBuilder();
+        
+        // Format the number in parts
+        if (cleaned.length() >= 3) {
+            formatted.append(cleaned.substring(0, 3));
+        }
+        
+        if (cleaned.length() >= 4) {
+            formatted.append(" ");
+            formatted.append(cleaned.substring(3, Math.min(6, cleaned.length())));
+        }
+        
+        if (cleaned.length() >= 7) {
+            formatted.append(" ");
+            formatted.append(cleaned.substring(6, Math.min(10, cleaned.length())));
+        }
+        
+        return formatted.toString();
+    }
+    
     private void updateDays(){
         int monthIndex = jcbBirthMonth.getSelectedIndex(); // get Selected month index
         int year = (Integer) jcbBirthYear.getSelectedItem();
@@ -491,7 +527,9 @@ public class AccountSetup extends JFrame implements ActionListener {
             
             String city = txtCity.getText().trim();
             if (city.isEmpty()){
-                JOptionPane.showMessageDialog(this, "City, State is required!", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, 
+                        "City, State is required!", 
+                        "Error", JOptionPane.ERROR_MESSAGE);
             }
             else {
                 cardLayout.show(cards, "Next");  
@@ -540,18 +578,28 @@ public class AccountSetup extends JFrame implements ActionListener {
 
             // Validate email
                 if (!inputEmail.matches("^[\\w-.]+@[\\w-]+\\.[a-z]{2,3}$")){
-                    JOptionPane.showMessageDialog(this, "Invalid Email Address", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, 
+                            "Invalid Email Address", 
+                            "Error", 
+                            JOptionPane.ERROR_MESSAGE);
+                    
                         return; // Prevent proceeding
             }
 
                 if (!inputContact.replaceAll("\\s+", "").matches("\\d{10}")) {
-                    JOptionPane.showMessageDialog(this, "Contact No. must be 10 digits!", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, 
+                            "Contact No. must be 10 digits!", 
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    
                         return; // Prevent proceeding
             }
             
             // Validate the birth year is selected
                 if (jcbYearValue == 0){
-                    JOptionPane.showMessageDialog(this, "Please select your birth year", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, 
+                            "Please select your birth year", 
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    
                         return; // Prevent proceeding
             }
 
@@ -561,7 +609,12 @@ public class AccountSetup extends JFrame implements ActionListener {
             int LEGAL_AGE = 18;
 
                 if (age < LEGAL_AGE){
-                    JOptionPane.showMessageDialog(this, "You must be at least " + LEGAL_AGE + " years old first to apply", "Error", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(this, 
+                            "You must be at least " + 
+                            LEGAL_AGE + 
+                            " years old first to apply", 
+                            "Error", JOptionPane.WARNING_MESSAGE);
+                    
                         return; // Prevent proceeding
             }
 
@@ -575,9 +628,10 @@ public class AccountSetup extends JFrame implements ActionListener {
             String desiredJobs = txtDesiredJobs.getText().trim();
             
             if (desiredJobs.isEmpty()){
-                JOptionPane.showMessageDialog(this, "This field cannot be empty!", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-            
+                JOptionPane.showMessageDialog(this, 
+                        "This field cannot be empty!", 
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }            
             else{
                 new ClientInterface().setVisible(true);
                 dispose();
@@ -586,31 +640,5 @@ public class AccountSetup extends JFrame implements ActionListener {
         
     }
    
-     public static String formatPhoneNumber(String input) {
-        // Only remove spaces and non-digits
-        String cleaned = input.replaceAll("[^0-9]", "");
-        
-        // Don't format if less than 3 digits
-        if (cleaned.length() < 3) return cleaned;
-        
-        StringBuilder formatted = new StringBuilder();
-        
-        // Format the number in parts
-        if (cleaned.length() >= 3) {
-            formatted.append(cleaned.substring(0, 3));
-        }
-        
-        if (cleaned.length() >= 4) {
-            formatted.append(" ");
-            formatted.append(cleaned.substring(3, Math.min(6, cleaned.length())));
-        }
-        
-        if (cleaned.length() >= 7) {
-            formatted.append(" ");
-            formatted.append(cleaned.substring(6, Math.min(10, cleaned.length())));
-        }
-        
-        return formatted.toString();
-    }
-                  
+                      
 }
