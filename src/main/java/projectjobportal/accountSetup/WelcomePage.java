@@ -22,13 +22,22 @@ public class WelcomePage extends JFrame implements ActionListener{
     private ImageIcon finalMainIcon;
     
     public WelcomePage() {
-        setTitle("JobVista");
+         
+        setTitle("JobVista");       
         setSize(500, 600);
         setLayout(null);
         setResizable(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
+        
+        try {
+            ImageIcon icon = new ImageIcon("mainIcon.png");
+            setIconImage(icon.getImage());
+        } catch (Exception e) {
+            System.err.println("Error loading icon: " + e.getMessage());
+        }
+        
       
         ImageIcon icon = new ImageIcon("mainIcon.png");
         finalMainIcon = new ImageIcon(icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
